@@ -1,0 +1,37 @@
+{% extends "nav.html" %}
+{% block content_main_blog_detail %}
+<div class="col">
+    <h4>{{ post.title }}</h4>
+    <small>
+        {{ post.created_on.date }} |&nbsp;
+        Categories:&nbsp;
+        {% for category in post.categories.all %}
+        <a href="{% url 'blog_category' category.name %}">
+            {{ category.name }}
+        </a>&nbsp;
+        {% endfor %}
+    </small>
+    <p>{{ post.body | linebreaks }}</p>
+    
+    <h5>Comments:</h5>
+    {% for comment in comments %}
+    <p>
+        On {{comment.created_on.date }}&nbsp;
+        <b>{{ comment.author }}</b> wrote:
+    </p>
+    <p>{{ comment.body }}</p>
+    <hr>
+    {% endfor %}
+    <h3>Leave a comment:</h3>
+    <form action="/blog/{{ post.pk }}/" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.author }}
+        </div>
+        <div class="form-group">
+            {{ form.body }}
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock content_main_blog_detail %}

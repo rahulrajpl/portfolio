@@ -1,0 +1,22 @@
+{% extends "nav.html" %}
+
+{%block content_main_blog%}
+
+<div class="col">
+  
+    {% for post in posts %}
+    <h5><a href="{% url 'blog_detail' post.pk%}">{{ post.title }}</a></h5>
+    <small>
+        {{ post.created_on.date }} |&nbsp;
+        Categories:&nbsp;
+        {% for category in post.categories.all %}
+        <a href="{% url 'blog_category' category.name %}">
+            {{ category.name }}
+        </a>&nbsp;
+        {% endfor %}
+    </small>
+    <p>{{ post.body | slice:":100" }}...</p>
+    {% endfor %}
+</div>
+
+{%endblock content_main_blog%}
